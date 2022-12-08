@@ -1,7 +1,7 @@
-import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import MainLayout from '../layout/Main';
+import AppProviders from '../lib/context/AppProviders';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -21,9 +21,11 @@ export default function App({ Component, pageProps }: AppProps) {
           content='initial-scale=1, width=device-width'
         />
       </Head>
-      <MainLayout>
-        <Component {...pageProps} />
-      </MainLayout>
+      <AppProviders>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+      </AppProviders>
     </div>
   );
 }
