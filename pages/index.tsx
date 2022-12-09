@@ -1,9 +1,5 @@
-import { Button, Container } from '@mui/material';
+import { Landing } from '../features/Landing';
 
 export default function Home() {
-  return (
-    <Container>
-      <Button variant='contained'>This is landing page</Button>
-    </Container>
-  );
+  return <Landing />;
 }
