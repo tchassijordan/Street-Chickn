@@ -1,7 +1,7 @@
-import { Container, Box } from '@mui/material';
-import Image from 'next/image';
-import heroImage from '../../assets/landing_page/chicken-nuggets.jpg';
+import { Container, Box, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import BestSellers from './components/BestSeller';
+import LandingHero from './components/LandingHero';
 
 const HeroImageBox = styled(Box)({
   width: '100vw',
@@ -10,23 +10,16 @@ const HeroImageBox = styled(Box)({
   maxHeight: '100vh'
 });
 
+const MenuBtn = styled(Button)({
+  borderRadius: '5em',
+  fontSize: '0.75rem'
+});
+
 export default function Landing() {
   return (
-    <Container
-      maxWidth={false}
-      disableGutters={true}
-      component='main'>
-      <HeroImageBox component='div'>
-        <Image
-          src={heroImage}
-          alt='Chicken nuggets preview '
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover'
-          }}
-        />
-      </HeroImageBox>
+    <Container maxWidth='lg'>
+      <LandingHero />
+      <BestSellers />
     </Container>
   );
 }
