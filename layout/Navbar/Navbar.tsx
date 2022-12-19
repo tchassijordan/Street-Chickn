@@ -13,20 +13,26 @@ import {
   Typography,
   Button
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Menu, ShoppingCart } from '@mui/icons-material';
+import Cart, { TCartProps } from '../../components/Cart';
 
 interface Props {
   navLinks: { name: string; href: string }[];
+  cartData?: TCartProps['data'];
 }
 
 const drawerWidth = 240;
 
-export default function Navbar(props: Props) {
-  const { navLinks } = props;
+export default function Navbar({ navLinks, cartData }: Props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [cartOpen, setCartOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleCartToggle = () => {
+    setCartOpen(!cartOpen);
   };
 
   const drawer = (
@@ -55,16 +61,30 @@ export default function Navbar(props: Props) {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar component='nav'>
+      <AppBar
+        component='nav'
+        sx={{
+          backgroundColor: '#000'
+        }}>
         <Toolbar>
-          <IconButton
-            color='inherit'
-            aria-label='open drawer'
-            edge='start'
-            onClick={handleDrawerToggle}
-            sx={{ mr: 8, display: { sm: 'none' }, left: '100%' }}>
-            <MenuIcon />
-          </IconButton>
+          <Box sx={{ maxWidth: '100px', ml: 'auto', mr: '0' }}>
+            <IconButton
+              color='inherit'
+              aria-label='open drawer'
+              edge='start'
+              onClick={handleDrawerToggle}
+              sx={{ display: { sm: 'none' } }}>
+              <Menu />
+            </IconButton>
+            <IconButton
+              color='inherit'
+              aria-label='open drawer'
+              edge='start'
+              onClick={handleCartToggle}
+              sx={{ display: { sm: 'none' } }}>
+              <ShoppingCart />
+            </IconButton>
+          </Box>
           <Typography
             variant='h6'
             component='div'
@@ -83,6 +103,7 @@ export default function Navbar(props: Props) {
           </Box>
         </Toolbar>
       </AppBar>
+      {/* Mobile navbar Drawer */}
       <Box component='nav'>
         <Drawer
           variant='temporary'
@@ -100,6 +121,31 @@ export default function Navbar(props: Props) {
             }
           }}>
           {drawer}
+        </Drawer>
+      </Box>
+      {/* Mobile Cart Drawer */}
+      <Box component='nav'>
+        <Drawer
+          variant='temporary'
+          open={cartOpen}
+          onClose={handleCartToggle}
+          ModalProps={{
+            keepMounted: true
+          }}
+          anchor='right'
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: '300px'
+            }
+          }}>
+          {
+            <Cart
+              data={cartData ?? []}
+              handleCartToggle={handleCartToggle}
+            />
+          }
         </Drawer>
       </Box>
     </Box>
