@@ -14,26 +14,23 @@ import {
   Button
 } from '@mui/material';
 import { Menu, ShoppingCart } from '@mui/icons-material';
-import Cart, { TCartProps } from '../../components/Cart';
+import Cart from '../../components/Cart';
+import { useCartContext } from '../../lib/context/CartProvider';
 
 interface Props {
   navLinks: { name: string; href: string }[];
-  cartData?: TCartProps['data'];
 }
 
 const drawerWidth = 240;
 
-export default function Navbar({ navLinks, cartData }: Props) {
+export default function Navbar({ navLinks }: Props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [cartOpen, setCartOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleCartToggle = () => {
-    setCartOpen(!cartOpen);
-  };
+  const { toggleCart, isCartOpen } = useCartContext();
 
   const drawer = (
     <Box
@@ -80,7 +77,7 @@ export default function Navbar({ navLinks, cartData }: Props) {
               color='inherit'
               aria-label='open drawer'
               edge='start'
-              onClick={handleCartToggle}
+              onClick={toggleCart}
               sx={{ display: { sm: 'none' } }}>
               <ShoppingCart />
             </IconButton>
@@ -127,8 +124,8 @@ export default function Navbar({ navLinks, cartData }: Props) {
       <Box component='nav'>
         <Drawer
           variant='temporary'
-          open={cartOpen}
-          onClose={handleCartToggle}
+          open={isCartOpen}
+          onClose={toggleCart}
           ModalProps={{
             keepMounted: true
           }}
@@ -140,12 +137,7 @@ export default function Navbar({ navLinks, cartData }: Props) {
               width: '300px'
             }
           }}>
-          {
-            <Cart
-              data={cartData ?? []}
-              handleCartToggle={handleCartToggle}
-            />
-          }
+          {<Cart />}
         </Drawer>
       </Box>
     </Box>

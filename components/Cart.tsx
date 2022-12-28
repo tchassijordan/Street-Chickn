@@ -6,7 +6,8 @@ import {
   ListItemText,
   ListItemButton,
   ListItemIcon,
-  makeStyles
+  makeStyles,
+  Typography
 } from '@mui/material';
 import {
   AddCircleOutline,
@@ -17,19 +18,19 @@ import {
 import Image from 'next/image';
 import chickenNuggetsImg from '../assets/landing_page/chicken-nuggets.jpg';
 import { grey, red } from '@mui/material/colors';
+import { useCartContext } from '../lib/context/CartProvider';
 
-export type TCartProps = {
-  data: {
-    name: string;
-    price: number;
-    currency: string;
-    quantity: number;
-    imgUrl?: string;
-  }[];
-  handleCartToggle: () => void;
-};
+export default function Cart() {
+  const {
+    data,
+    clearCart,
+    addItemToCart,
+    currency,
+    deleteItemFromCart,
+    toggleCart,
+    reduceItemQty
+  } = useCartContext();
 
-export default function Cart({ data, handleCartToggle }: TCartProps) {
   return (
     <Box
       sx={{
@@ -40,11 +41,26 @@ export default function Cart({ data, handleCartToggle }: TCartProps) {
         component='div'
         height='3em'
         color={grey[600]}
-        display='flex'
-        alignItems='center'
-        width='fit-content'
-        onClick={handleCartToggle}>
-        <CancelOutlined />
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 'fit-content',
+          gap: '0.25em'
+        }}
+        onClick={toggleCart}>
+        <CancelOutlined
+          sx={{
+            fontSize: '0.8rem'
+          }}
+        />{' '}
+        <Typography
+          component='p'
+          sx={{
+            fontSize: '0.9rem'
+          }}>
+          Close
+        </Typography>
       </Box>
       <List
         sx={{
@@ -54,7 +70,7 @@ export default function Cart({ data, handleCartToggle }: TCartProps) {
           height: '100%'
         }}>
         <Box>
-          {data.map(({ name, price, quantity, currency, imgUrl }, index) => (
+          {data.map(({ id, name, price, quantity, image: image }, index) => (
             <ListItem
               key={index}
               disablePadding
@@ -70,7 +86,7 @@ export default function Cart({ data, handleCartToggle }: TCartProps) {
                   mr: '1.15em'
                 }}>
                 <Image
-                  src={imgUrl || chickenNuggetsImg}
+                  src={image || chickenNuggetsImg}
                   alt={name}
                   style={{
                     objectFit: 'cover',
@@ -113,7 +129,7 @@ export default function Cart({ data, handleCartToggle }: TCartProps) {
                       maxWidth: '70%'
                     }}>
                     <ListItemIcon sx={{ minWidth: 'unset' }}>
-                      <RemoveCircleOutline />{' '}
+                      <RemoveCircleOutline onClick={() => reduceItemQty(id)} />{' '}
                     </ListItemIcon>
                     <div>
                       <ListItemText
@@ -126,7 +142,17 @@ export default function Cart({ data, handleCartToggle }: TCartProps) {
                       />
                     </div>
                     <ListItemIcon sx={{ minWidth: 'unset' }}>
-                      <AddCircleOutline />{' '}
+                      <AddCircleOutline
+                        onClick={() =>
+                          addItemToCart({
+                            id,
+                            name,
+                            price,
+                            quantity,
+                            image
+                          })
+                        }
+                      />{' '}
                     </ListItemIcon>
                   </Box>
                   <ListItemIcon
@@ -134,7 +160,10 @@ export default function Cart({ data, handleCartToggle }: TCartProps) {
                       width: '20%',
                       minWidth: 'unset'
                     }}>
-                    <DeleteForeverOutlined sx={{ fontSize: '1.35rem' }} />{' '}
+                    <DeleteForeverOutlined
+                      sx={{ fontSize: '1.35rem' }}
+                      onClick={() => deleteItemFromCart(id)}
+                    />{' '}
                   </ListItemIcon>
                 </Box>
               </Box>

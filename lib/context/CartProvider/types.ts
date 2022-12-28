@@ -13,9 +13,10 @@ export type TCartData = {
 export type TCartContextType = {
   data: TCartData[];
   addItemToCart: (itemData: TCartData) => void;
-  removeItem: (itemId: string) => void;
+  deleteItemFromCart: (itemId: string) => void;
   clearCart: () => void;
   isCartOpen: boolean;
-  toggleCart: (isCartOpen?: boolean) => void;
+  toggleCart: () => void;
   currency: string;
+  reduceItemQty: (itemId: string) => void;
 };
