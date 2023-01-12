@@ -11,7 +11,9 @@ type TLayoutProps = {
 export default function MainLayout({ children }: TLayoutProps) {
   const navBarLinks = [
     { name: 'Home', href: '/' },
-    { name: 'Menu', href: '/menu' }
+    { name: 'Menu', href: '/menu' },
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' }
   ];
 
   //For testing cart handlers

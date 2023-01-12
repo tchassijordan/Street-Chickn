@@ -6,17 +6,11 @@ import {
   ListItemText,
   ListItemButton,
   ListItemIcon,
-  makeStyles,
   Typography
 } from '@mui/material';
-import {
-  AddCircleOutline,
-  DeleteForeverOutlined,
-  RemoveCircleOutline,
-  CancelOutlined
-} from '@mui/icons-material';
+import { Add, LayersClearOutlined, Remove, Close } from '@mui/icons-material';
 import Image from 'next/image';
-import chickenNuggetsImg from '../assets/landing_page/chicken-nuggets.jpg';
+import defaultChickenNuggetsImg from '../assets/landing_page/chicken-nuggets.jpg';
 import { grey, red } from '@mui/material/colors';
 import { useCartContext } from '../lib/context/CartProvider';
 
@@ -37,31 +31,27 @@ export default function Cart() {
         px: '1em',
         height: 'calc(100vh-3em)'
       }}>
-      <Box
-        component='div'
-        height='3em'
-        color={grey[600]}
+      <Close
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 'fit-content',
-          gap: '0.25em'
+          fontSize: { xs: '1rem', sm: '1.25rem' },
+          cursor: 'pointer',
+          marginTop: '1em',
+          color: grey[600]
         }}
-        onClick={toggleCart}>
-        <CancelOutlined
-          sx={{
-            fontSize: '0.8rem'
-          }}
-        />{' '}
-        <Typography
-          component='p'
-          sx={{
-            fontSize: '0.9rem'
-          }}>
-          Close
-        </Typography>
-      </Box>
+        onClick={toggleCart}
+      />
+      <Typography
+        variant='h1'
+        sx={{
+          textTransform: 'capitalize',
+          fontSize: { xs: '1.1rem', sm: '1.25rem' },
+          fontWeight: 700,
+          color: grey[800],
+          mt: '1em',
+          mb: '1.15em'
+        }}>
+        Review your shopping cart
+      </Typography>
       <List
         sx={{
           display: 'flex',
@@ -81,12 +71,12 @@ export default function Cart() {
               }}>
               <ListItemAvatar
                 sx={{
-                  width: '40%',
+                  width: '35%',
                   height: '5.5em',
                   mr: '1.15em'
                 }}>
                 <Image
-                  src={image || chickenNuggetsImg}
+                  src={image || defaultChickenNuggetsImg}
                   alt={name}
                   style={{
                     objectFit: 'cover',
@@ -97,7 +87,12 @@ export default function Cart() {
                   }}
                 />
               </ListItemAvatar>
-              <Box sx={{ mt: '0' }}>
+              <Box
+                sx={{
+                  borderBottom: `1px solid ${grey[400]}`,
+                  width: '60%',
+                  pb: '0.1em'
+                }}>
                 <ListItemText
                   primary={name}
                   primaryTypographyProps={{
@@ -109,7 +104,7 @@ export default function Cart() {
                 <ListItemText
                   primary={`${price} ${currency}`}
                   primaryTypographyProps={{
-                    fontSize: '0.85rem',
+                    fontSize: '0.95rem',
                     color: grey[700]
                   }}
                 />
@@ -126,23 +121,28 @@ export default function Cart() {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       width: '100%',
-                      maxWidth: '70%'
+                      maxWidth: '60%',
+                      fontSize: '0.9rem'
                     }}>
                     <ListItemIcon sx={{ minWidth: 'unset' }}>
-                      <RemoveCircleOutline onClick={() => reduceItemQty(id)} />{' '}
+                      <Remove
+                        sx={{ fontSize: '1.25em' }}
+                        onClick={() => reduceItemQty(id)}
+                      />{' '}
                     </ListItemIcon>
                     <div>
                       <ListItemText
                         primary={quantity}
                         primaryTypographyProps={{
-                          fontSize: '1rem',
+                          fontSize: '0.9rem',
                           color: grey[900]
                         }}
                         sx={{}}
                       />
                     </div>
                     <ListItemIcon sx={{ minWidth: 'unset' }}>
-                      <AddCircleOutline
+                      <Add
+                        sx={{ fontSize: '1.25em' }}
                         onClick={() =>
                           addItemToCart({
                             id,
@@ -160,8 +160,8 @@ export default function Cart() {
                       width: '20%',
                       minWidth: 'unset'
                     }}>
-                    <DeleteForeverOutlined
-                      sx={{ fontSize: '1.35rem' }}
+                    <LayersClearOutlined
+                      sx={{ fontSize: '1.05em' }}
                       onClick={() => deleteItemFromCart(id)}
                     />{' '}
                   </ListItemIcon>
@@ -170,18 +170,53 @@ export default function Cart() {
             </ListItem>
           ))}
         </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography
+            variant='h3'
+            sx={{
+              textTransform: 'capitalize',
+              fontSize: { xs: '1rem', sm: '1.15rem' },
+              fontWeight: 700,
+              color: grey[800],
+              width: '35%',
+              mr: '1.15em'
+            }}>
+            Sub Total
+          </Typography>
+          <ListItemText
+            primary={`0000.0 ${currency}`}
+            primaryTypographyProps={{
+              fontSize: '0.95rem',
+              color: grey[700],
+              width: '60%',
+              my: '0'
+            }}
+          />
+        </Box>
         <Box component='div'>
           <ListItemButton
             sx={{
-              borderRadius: '5em',
+              borderRadius: '0.5em',
               fontSize: '0.75rem',
-              backgroundColor: 'white',
-              color: 'black',
-              border: '2px solid rgba(156, 163, 175, 0.5)',
-              width: 'fit-content',
-              maxHeight: '35px'
+              fontWeight: '700',
+              textTransform: 'capitalize',
+              letterSpacing: '0.025em',
+              backgroundColor: grey[800],
+              color: grey[50],
+              width: '100%',
+              py: '1.5em',
+              px: '1.5em',
+              textAlign: 'center',
+              '&:hover': {
+                backgroundColor: grey[800],
+                color: grey[50]
+              }
             }}>
-            Order now
+            <Box
+              component='span'
+              sx={{ mx: 'auto' }}>
+              Order now
+            </Box>
           </ListItemButton>
         </Box>
       </List>
