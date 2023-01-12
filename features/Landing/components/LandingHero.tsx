@@ -24,7 +24,7 @@ export default function LandingHero() {
       sx={{
         width: '90%',
         maxWidth: '100%',
-        height: '85vh',
+        height: '95vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

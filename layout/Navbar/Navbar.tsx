@@ -11,7 +11,8 @@ import {
   ListItemText,
   Toolbar,
   Typography,
-  Button
+  Button,
+  Container
 } from '@mui/material';
 import { Menu, ShoppingCart } from '@mui/icons-material';
 import Cart from '../../components/Cart';
@@ -24,10 +25,10 @@ interface Props {
 const drawerWidth = 240;
 
 export default function Navbar({ navLinks }: Props) {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [isMobileNavOpen, setisMobileNavOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    setisMobileNavOpen(!isMobileNavOpen);
   };
 
   const { toggleCart, isCartOpen } = useCartContext();
@@ -63,48 +64,63 @@ export default function Navbar({ navLinks }: Props) {
         sx={{
           backgroundColor: '#000'
         }}>
-        <Toolbar>
-          <Box sx={{ maxWidth: '100px', ml: 'auto', mr: '0' }}>
-            <IconButton
-              color='inherit'
-              aria-label='open drawer'
-              edge='start'
-              onClick={handleDrawerToggle}
-              sx={{ display: { sm: 'none' } }}>
-              <Menu />
-            </IconButton>
-            <IconButton
-              color='inherit'
-              aria-label='open drawer'
-              edge='start'
-              onClick={toggleCart}
-              sx={{ display: { sm: 'none' } }}>
-              <ShoppingCart />
-            </IconButton>
-          </Box>
-          <Typography
-            variant='h6'
-            component='div'
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
-            Street Chick&apos;n
-          </Typography>
-          {/* Navbar links for desktop */}
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navLinks.map(({ name }) => (
-              <Button
-                key={name}
-                sx={{ color: '#fff' }}>
-                {name}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
+        <Container maxWidth='lg'>
+          <Toolbar>
+            <Box
+              sx={{
+                maxWidth: '100px',
+                ml: { xs: 'auto', sm: '1rem' },
+                mr: '0',
+                order: { sm: 10 }
+              }}>
+              <IconButton
+                color='inherit'
+                aria-label='open drawer'
+                edge='start'
+                onClick={handleDrawerToggle}
+                sx={{ display: { sm: 'none' } }}>
+                <Menu />
+              </IconButton>
+              <IconButton
+                color='inherit'
+                aria-label='open drawer'
+                title='Cart'
+                edge='start'
+                onClick={toggleCart}>
+                <ShoppingCart
+                  sx={{ width: { sm: '1.2rem' }, height: { sm: '1.2rem' } }}
+                />
+              </IconButton>
+            </Box>
+            <Typography
+              variant='h1'
+              component='div'
+              sx={{
+                flexGrow: 1,
+                display: { sm: 'block' },
+                fontSize: '1.05rem',
+                order: -10
+              }}>
+              Street Chick&apos;n
+            </Typography>
+            {/* Navbar links for desktop */}
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              {navLinks.map(({ name }) => (
+                <Button
+                  key={name}
+                  sx={{ color: '#fff', textTransform: 'capitalize' }}>
+                  {name}
+                </Button>
+              ))}
+            </Box>
+          </Toolbar>
+        </Container>
       </AppBar>
       {/* Mobile navbar Drawer */}
       <Box component='nav'>
         <Drawer
           variant='temporary'
-          open={mobileOpen}
+          open={isMobileNavOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
             keepMounted: true // Better open performance on mobile.
@@ -120,7 +136,7 @@ export default function Navbar({ navLinks }: Props) {
           {drawer}
         </Drawer>
       </Box>
-      {/* Mobile Cart Drawer */}
+      {/* Cart Drawer */}
       <Box component='nav'>
         <Drawer
           variant='temporary'
@@ -131,10 +147,10 @@ export default function Navbar({ navLinks }: Props) {
           }}
           anchor='right'
           sx={{
-            display: { xs: 'block', sm: 'none' },
+            display: { xs: 'block' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
-              width: '300px'
+              width: { xs: '300px', sm: '350px' }
             }
           }}>
           {<Cart />}
